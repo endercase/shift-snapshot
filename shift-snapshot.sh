@@ -26,8 +26,9 @@ SHIFT_CONFIG=~/shift/config.json
 DB_NAME="$(grep "database" $SHIFT_CONFIG | cut -f 4 -d '"')"
 SNAPSHOT_LOG=snapshot.log
 SNAPSHOT_DIRECTORY=snapshot/
-if [ ! -f $SNAPSHOT_DIRECTORY ]; then
- mkdir -p $SNAPSHOT_DIRECTORY
+DAYS=1
+if [ ! -f ${SNAPSHOT_DIRECTORY} ]; then
+ mkdir -p ${SNAPSHOT_DIRECTORY}
 fi
 
 
@@ -43,11 +44,11 @@ create_snapshot() {
   fullPathLast="${SNAPSHOT_DIRECTORY}blockchain.db.gz"
   sudo -u postgres pg_dump -O "$DB_NAME" | gzip > "$fullPath"
   if [ $? != 0 ]; then
-    echo "X Failed to create snapshot." | tee -a $SNAPSHOT_LOG
+    echo "X Failed to create snapshot." | tee -a ${SNAPSHOT_LOG}
     exit 1
   else
-    echo "$NOW -- OK snapshot $fullPath created successfully" | tee -a $SNAPSHOT_LOG
-    sudo cp $fullPath $fullPathLast
+    echo "${NOW} -- OK snapshot ${fullPath} created successfully" | tee -a ${SNAPSHOT_LOG}
+    sudo cp ${fullPath} ${fullPathLast}
   fi
 
 }
@@ -60,10 +61,14 @@ show_log(){
   echo "--------------------------------------------------END"
 }
 
+remove_older(){
+find ${SNAPSHOT_DIRECTORY} -type f -name '*.gz' -mtime +${days} -exec rm {} \;
+}
 ################################################################################
 
 case $1 in
 "create")
+  remove_older
   create_snapshot
   ;;
 "log")
