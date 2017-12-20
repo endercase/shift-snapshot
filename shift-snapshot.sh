@@ -22,7 +22,7 @@ if [ "\$USER" == "root" ]; then
   exit 1
 fi
 
-SHIFT_CONFIG=~/shift/config.json
+SHIFT_CONFIG=../shift/config.json
 DB_NAME="$(grep "database" $SHIFT_CONFIG | cut -f 4 -d '"')"
 SNAPSHOT_LOG=snapshot.log
 SNAPSHOT_DIRECTORY=snapshot/
@@ -62,7 +62,7 @@ show_log(){
 }
 
 remove_older(){
-find ${SNAPSHOT_DIRECTORY} -type f -name '*.gz' -mtime +${days} -exec rm {} \;
+find ${SNAPSHOT_DIRECTORY} -type f -name '*.gz' -mtime +${DAYS} -exec rm {} \;
 }
 ################################################################################
 
