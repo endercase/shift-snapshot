@@ -11,7 +11,7 @@ For more information about SHIFT please visit - http://www.shiftnrg.org/
 Execute the following commands
 ```
 cd ~/
-git clone https://github.com/mrgrshift/shift-snapshot
+git clone https://github.com/biolypl/shift-snapshot
 cd shift-snapshot/
 bash shift-snapshot.sh help
 ```
